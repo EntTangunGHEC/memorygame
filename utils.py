@@ -1,56 +1,60 @@
 import requests
-import pygame
-import io
-import os
 import random
+import time
+import os
+import pygame
 
-def clear_screen():
-    """Clear the terminal screen."""
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-def fetch_star_wars_characters():
-    """스타워즈 캐릭터 정보를 API에서 가져옵니다."""
+def fetch_pokemon_characters():
+    """포켓몬 정보를 API에서 가져옵니다."""
     try:
-        response = requests.get("https://akabab.github.io/starwars-api/api/all.json")
-        if response.status_code == 200:
-            characters = response.json()
-            # 필요한 데이터만 처리해서 반환
-            return [
-                {
-                    "id": char.get("id", i),
-                    "name": char.get("name", f"Character {i}"),
-                    "image": char.get("image", "")
+        # 포켓몬 수 (151 = 1세대 포켓몬)
+        total_pokemon = 151
+        pokemons = []
+        
+        # 각 포켓몬에 대한 정보 가져오기
+        for i in range(1, total_pokemon + 1):
+            response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{i}")
+            if response.status_code == 200:
+                data = response.json()
+                pokemon = {
+                    "id": data["id"],
+                    "name": data["name"].capitalize(),
+                    "image": data["sprites"]["other"]["official-artwork"]["front_default"]
                 }
-                for i, char in enumerate(characters)
-            ]
-        else:
-            print(f"데이터 가져오기 오류: {response.status_code}")
-            return get_fallback_characters()
+                pokemons.append(pokemon)
+            else:
+                print(f"포켓몬 {i} 데이터 가져오기 오류: {response.status_code}")
+        
+        if len(pokemons) < 18:  # 최소 18개 필요 (6x6 그리드)
+            print("API에서 충분한 포켓몬을 가져오지 못했습니다. 대체 데이터를 사용합니다.")
+            return get_fallback_pokemon()
+            
+        return pokemons
     except Exception as e:
         print(f"데이터 가져오기 예외 발생: {e}")
-        return get_fallback_characters()
+        return get_fallback_pokemon()
 
-def get_fallback_characters():
-    """API 요청 실패 시 기본 캐릭터 정보를 제공합니다."""
+def get_fallback_pokemon():
+    """API 요청 실패 시 기본 포켓몬 정보를 제공합니다."""
     return [
-        {"id": 1, "name": "Luke Skywalker", "image": "https://starwars-visualguide.com/assets/img/characters/1.jpg"},
-        {"id": 2, "name": "Darth Vader", "image": "https://starwars-visualguide.com/assets/img/characters/4.jpg"},
-        {"id": 3, "name": "Leia Organa", "image": "https://starwars-visualguide.com/assets/img/characters/5.jpg"},
-        {"id": 4, "name": "Han Solo", "image": "https://starwars-visualguide.com/assets/img/characters/14.jpg"},
-        {"id": 5, "name": "Chewbacca", "image": "https://starwars-visualguide.com/assets/img/characters/13.jpg"},
-        {"id": 6, "name": "R2-D2", "image": "https://starwars-visualguide.com/assets/img/characters/3.jpg"},
-        {"id": 7, "name": "C-3PO", "image": "https://starwars-visualguide.com/assets/img/characters/2.jpg"},
-        {"id": 8, "name": "Obi-Wan", "image": "https://starwars-visualguide.com/assets/img/characters/10.jpg"},
-        {"id": 9, "name": "Yoda", "image": "https://starwars-visualguide.com/assets/img/characters/20.jpg"},
-        {"id": 10, "name": "Palpatine", "image": "https://starwars-visualguide.com/assets/img/characters/21.jpg"},
-        {"id": 11, "name": "Boba Fett", "image": "https://starwars-visualguide.com/assets/img/characters/22.jpg"},
-        {"id": 12, "name": "Lando", "image": "https://starwars-visualguide.com/assets/img/characters/25.jpg"},
-        {"id": 13, "name": "Anakin", "image": "https://starwars-visualguide.com/assets/img/characters/11.jpg"},
-        {"id": 14, "name": "Padmé", "image": "https://starwars-visualguide.com/assets/img/characters/35.jpg"},
-        {"id": 15, "name": "Mace Windu", "image": "https://starwars-visualguide.com/assets/img/characters/51.jpg"},
-        {"id": 16, "name": "Qui-Gon Jinn", "image": "https://starwars-visualguide.com/assets/img/characters/32.jpg"},
-        {"id": 17, "name": "Count Dooku", "image": "https://starwars-visualguide.com/assets/img/characters/67.jpg"},
-        {"id": 18, "name": "General Grievous", "image": "https://starwars-visualguide.com/assets/img/characters/79.jpg"}
+        {"id": 1, "name": "Bulbasaur", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"},
+        {"id": 4, "name": "Charmander", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"},
+        {"id": 7, "name": "Squirtle", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png"},
+        {"id": 25, "name": "Pikachu", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"},
+        {"id": 39, "name": "Jigglypuff", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png"},
+        {"id": 54, "name": "Psyduck", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"},
+        {"id": 94, "name": "Gengar", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"},
+        {"id": 129, "name": "Magikarp", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png"},
+        {"id": 132, "name": "Ditto", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png"},
+        {"id": 143, "name": "Snorlax", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png"},
+        {"id": 150, "name": "Mewtwo", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"},
+        {"id": 151, "name": "Mew", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"},
+        {"id": 133, "name": "Eevee", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"},
+        {"id": 12, "name": "Butterfree", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"},
+        {"id": 16, "name": "Pidgey", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png"},
+        {"id": 92, "name": "Gastly", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png"},
+        {"id": 104, "name": "Cubone", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/104.png"},
+        {"id": 124, "name": "Jynx", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/124.png"}
     ]
 
 def load_image(url):

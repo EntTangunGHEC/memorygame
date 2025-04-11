@@ -2,8 +2,9 @@ import pygame
 import random
 import time
 import sys
+import io  # io 모듈 추가
 from card import Card
-from utils import fetch_star_wars_characters, load_image
+from utils import fetch_pokemon_characters, load_image  # 함수 이름 변경
 
 # 색상 정의
 WHITE = (255, 255, 255)
@@ -46,8 +47,8 @@ class MemoryGame:
         self.setup_game()
     
     def setup_game(self):
-        # 캐릭터 데이터 가져오기
-        characters = fetch_star_wars_characters()
+        # 포켓몬 데이터 가져오기
+        characters = fetch_pokemon_characters()
         
         # 필요한 캐릭터 수 계산
         needed_characters = (self.grid_size * self.grid_size) // 2
@@ -142,7 +143,7 @@ class MemoryGame:
             pygame.draw.rect(self.screen, BLACK, card_rect, 2)  # 테두리
             
             # 카드 뒷면 표시
-            back_text = self.font.render("SW", True, BLACK)
+            back_text = self.font.render("PK", True, BLACK)  # "SW"에서 "PK"로 변경
             text_rect = back_text.get_rect(center=(x + self.card_width//2, y + self.card_height//2))
             self.screen.blit(back_text, text_rect)
     
