@@ -3,7 +3,7 @@ import random
 import time
 import os
 import pygame
-import io  # io 모듈 추가
+import io
 
 def fetch_pokemon_characters():
     """포켓몬 정보를 API에서 가져옵니다."""
@@ -34,3 +34,24 @@ def fetch_pokemon_characters():
     except Exception as e:
         print(f"데이터 가져오기 예외 발생: {e}")
         return get_fallback_pokemon()
+
+def get_fallback_pokemon():
+    """API 요청 실패 시 기본 포켓몬 정보를 제공합니다."""
+    return [
+        {"id": 1, "name": "Bulbasaur", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"},
+        {"id": 4, "name": "Charmander", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"},
+        {"id": 7, "name": "Squirtle", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png"},
+        {"id": 25, "name": "Pikachu", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"},
+        {"id": 39, "name": "Jigglypuff", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png"},
+        {"id": 54, "name": "Psyduck", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png"},
+        {"id": 94, "name": "Gengar", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"},
+        {"id": 129, "name": "Magikarp", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png"},
+        {"id": 132, "name": "Ditto", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png"},
+        {"id": 143, "name": "Snorlax", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png"},
+        {"id": 150, "name": "Mewtwo", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"},
+        {"id": 151, "name": "Mew", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"},
+        {"id": 133, "name": "Eevee", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png"},
+        {"id": 12, "name": "Butterfree", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"},
+        {"id": 16, "name": "Pidgey", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png"},
+        {"id": 92, "name": "Gastly", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png"},
+    ]
