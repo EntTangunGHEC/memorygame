@@ -54,4 +54,33 @@ def get_fallback_pokemon():
         {"id": 12, "name": "Butterfree", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png"},
         {"id": 16, "name": "Pidgey", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png"},
         {"id": 92, "name": "Gastly", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/92.png"},
+        {"id": 104, "name": "Cubone", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/104.png"},
+        {"id": 124, "name": "Jynx", "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/124.png"}
     ]
+
+def load_image(url):
+    """URL에서 이미지를 로드하고 적절한 크기로 조정합니다."""
+    try:
+        if not url:
+            # 기본 이미지 반환
+            surf = pygame.Surface((90, 105))
+            surf.fill((200, 200, 200))
+            return surf
+            
+        response = requests.get(url)
+        if response.status_code == 200:
+            image_data = io.BytesIO(response.content)
+            image = pygame.image.load(image_data)
+            # 카드 크기에 맞게 이미지 크기 조정
+            return pygame.transform.scale(image, (90, 105))
+        else:
+            # 이미지 로드 실패 시 기본 이미지 반환
+            surf = pygame.Surface((90, 105))
+            surf.fill((200, 200, 200))
+            return surf
+    except Exception as e:
+        print(f"이미지 로드 오류: {e}")
+        # 오류 발생 시 기본 이미지 반환
+        surf = pygame.Surface((90, 105))
+        surf.fill((200, 200, 200))
+        return surf
